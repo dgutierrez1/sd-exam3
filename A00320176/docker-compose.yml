@@ -1,0 +1,44 @@
+version: '2'
+
+services:
+
+  consul:
+    image: troyfontaine/consul-server
+    container_name: consul
+    ports:
+      - 8500:8500
+    command: "-bind=0.0.0.0 -server -bootstrap"
+
+
+  registrator:
+    image: "gliderlabs/registrator:latest"
+    container_name: registrator
+    command: "-internal consul://consul:8500"
+    links:
+      - consul:consul
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock
+ 
+  balancer:
+    build: ./haproxy
+    container_name: balancer
+    ports:
+      - 80:80
+    links:
+      - consul:consul
+    command: consul-template -consul-addr=consul:8500 -template="/etc/haproxy/haproxy.ctmpl:/etc/haproxy/haproxy.cfg:/usr/sbin/haproxy -f /etc/haproxy/haproxy.cfg -D -p /var/run/haproxy.pid"
+    environment:
+      - SERVICE_NAME=Balanceador
+
+  redis:
+    image: "redis:alpine"
+
+  web:
+    build: ./web
+    ports:
+      - 5000
+    volumes:
+     - ./web:/code
+    environment:
+     - SERVICE_NAME=Python
+
