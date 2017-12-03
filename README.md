@@ -4,13 +4,13 @@ Repositorio: https://github.com/dgutierrez1/sd-exam3/tree/A00320176/add-solution
 
 ## Comandos de linux necesarios para el aprovisionamiento de los servicios solicitados
 
-Se deben utilizar diferentes comandos dependiendo del microsevicio que se este configurando
+Se deben utilizar diferentes comandos dependiendo del microservicio que se este configurando
 
 | Comando | Descripcion |
 | ------------- | ------------- |
 | pip install -r requirements.txt | Se utilizo para la instalacion de los paquetes necesarios para el funcionamiento de la aplicacion de Flask. Los paquetes estaban especificados en el archivo requirements.txt |
 | firewall-cmd --zone=public --add-port=80/tcp --permanent	  | Se usa para abrir el puerto especificado  |
-| yum -y install wget && yum -y install unzip && yum -y install	  | Se usa para instalar los parquetes necesarios en el contenedor  |
+| yum -y install wget && yum -y install unzip && yum -y install	  | Se usa para instalar los paquetes necesarios en el contenedor  |
 
 El uso de Docker y Docker-compose disminuye sustancialmente el uso de otros comandos que serian necesarios en la configuracion de la maquina normalmente.
 
@@ -114,7 +114,7 @@ Escalando los contenedores web
 La lista de los contenedores corriendo
 <img src="img/ps.JPG">
 
-El balanceador direcciona las peticiones a los diferentes servicios disponibles
+El balanceador direcciona las peticiones a los diferentes contenedores disponibles
 <img src="img/1.JPG">
 <img src="img/2.JPG">
 <img src="img/3.JPG">
@@ -127,7 +127,7 @@ Evidencia en Consul
 | Problema | Solucion |
 | ------------- | ------------- |
 | Poder evidenciar efectivamente que el balanceador esta direccionando a diferentes nodos. | En la aplicacion web se uso una libreria de Python con la que se puede obtener el nombre del host y mostrarlo al usuario |
-| Errores en el balanceador usando NGINX | Inicialmente se intento usar NGINX pero el la configuracion con el template hubo muchos errores, la mayoria sobre durante la creacion del contenedor. El consul template tambien tuvo genero errores porque el repositorio de donde se estaba obtenido habia cambiado las direcciones. Al final se utilizo HAPROXY y se pudo configurar el balanceador facilmente.  |
+| Errores en el balanceador usando NGINX | Inicialmente se intento usar NGINX pero en la configuracion con el template hubo muchos errores, la mayoria durante la creacion del contenedor. El consul template tambien genero errores porque el repositorio de donde se estaba obtenido habia cambiado su estructura. Al final se utilizo HAPROXY y se pudo configurar el balanceador facilmente.  |
 
 
 
